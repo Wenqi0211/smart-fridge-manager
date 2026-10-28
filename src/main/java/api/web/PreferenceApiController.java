@@ -5,6 +5,10 @@ import controller.PreferenceController;
 import model.HealthGoal;
 import model.Preference;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Locale;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,13 +39,15 @@ public class PreferenceApiController {
     @PutMapping
     public ResponseEntity<Preference> save(@RequestBody PreferenceRequest body) {
         if (body == null || body.getHealthGoal() == null || body.getHealthGoal().isBlank()) {
-            return ResponseEntity.badRequest().build();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "healthGoal must be MUSCLE_BUILDING, FAT_LOSS or BLOOD_SUGAR_CARE");
         }
         try {
-            HealthGoal goal = HealthGoal.valueOf(body.getHealthGoal().trim().toUpperCase());
+            HealthGoal goal = HealthGoal.valueOf(body.getHealthGoal().trim().toUpperCase(Locale.ROOT));
             return ResponseEntity.ok(preferenceController.savePreference(goal));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "healthGoal must be MUSCLE_BUILDING, FAT_LOSS or BLOOD_SUGAR_CARE");
         }
     }
 }

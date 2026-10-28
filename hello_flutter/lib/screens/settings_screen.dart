@@ -108,14 +108,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       await FridgeApiService.instance.savePreference(goal);
       if (!mounted) return;
       setState(() => _current = goal);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Health goal saved.')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Health goal saved.')));
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$e')),
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
     }
   }
 
@@ -208,6 +206,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     onPressed: _load,
                     icon: const Icon(Icons.refresh),
                     label: const Text('Reload from server'),
+                  ),
+                  TextButton.icon(
+                    onPressed: () {
+                      FridgeApiService.instance.signOut();
+                      Navigator.of(
+                        context,
+                      ).pushNamedAndRemoveUntil('/auth', (_) => false);
+                    },
+                    icon: const Icon(Icons.logout),
+                    label: const Text('Sign out'),
                   ),
                 ],
               ]),

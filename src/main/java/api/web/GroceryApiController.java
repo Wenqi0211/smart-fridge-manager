@@ -7,6 +7,8 @@ import model.FoodCatalogEntry;
 import model.FoodCategory;
 import model.GroceryItem;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -90,7 +92,15 @@ public class GroceryApiController {
     // insert your code here: tighten validation or align this endpoint with final PRD rules
     public ResponseEntity<GroceryItem> addLine(@RequestBody GroceryAddRequest body) {
         if (body == null || body.getFoodName() == null || body.getFoodName().isBlank()) {
-            return ResponseEntity.badRequest().build();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "foodName must not be blank");
+        }
+
+        if (body.getQuantity() < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "quantity must be a non-negative integer");
+        }
+        if (!Double.isFinite(body.getPrice()) || body.getPrice() < 0 || body.getPrice() > 1_000_000) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "price must be a finite number between 0 and 1000000");
         }
 
         Optional<FoodCatalogEntry> resolved = catalogController.resolveEntry(body.getFoodName().trim());
@@ -111,13 +121,7 @@ public class GroceryApiController {
         String id = UUID.randomUUID().toString();
         String name = catalogController.canonicalFoodName(body.getFoodName().trim());
 
-        // Basic validation:
-        // - quantity must be >= 0
-        // - price must not be negative
-        int qty = Math.max(0, body.getQuantity());
-        double price = body.getPrice() >= 0 ? body.getPrice() : 0.0;
-
-        GroceryItem line = new GroceryItem(id, name, cat, qty, price, false);
+        GroceryItem line = new GroceryItem(id, name, cat, body.getQuantity(), body.getPrice(), false);
         groceryController.addLine(line);
         return ResponseEntity.ok(line);
     }
@@ -136,7 +140,7 @@ public class GroceryApiController {
     public ResponseEntity<Void> deleteLine(@PathVariable String id) {
         boolean exists = groceryController.getItems().stream().anyMatch(i -> i.getId().equals(id));
         if (!exists) {
-            return ResponseEntity.notFound().build();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Grocery item not found");
         }
         groceryController.deleteItem(id);
         return ResponseEntity.noContent().build();
@@ -147,7 +151,11 @@ public class GroceryApiController {
      */
     @PatchMapping("/items/{id}/collected")
     public ResponseEntity<GroceryItem> toggleCollected(@PathVariable String id) {
-        return ResponseEntity.ok(groceryController.toggleCollected(id));
+        try {
+            return ResponseEntity.ok(groceryController.toggleCollected(id));
+        } catch (IllegalArgumentException missingInCurrentUser) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Grocery item not found");
+        }
     }
 
     /**
@@ -165,7 +173,11 @@ public class GroceryApiController {
     public ResponseEntity<GroceryItem> updateQuantity(
             @PathVariable String id,
             @RequestParam("delta") int delta) {
-        return ResponseEntity.ok(groceryController.updateQuantity(id, delta));
+        try {
+            return ResponseEntity.ok(groceryController.updateQuantity(id, delta));
+        } catch (IllegalArgumentException missingInCurrentUser) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Grocery item not found");
+        }
     }
 
     /**

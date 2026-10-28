@@ -99,4 +99,9 @@ public class FoodItem {
         LocalDate expiry = LocalDate.parse(expiryDate);
         return expiry.isEqual(LocalDate.now());
     }
+
+    /** Expired or depleted batches must not count as ingredients available for cooking. */
+    public boolean isAvailableForCooking() {
+        return quantity > 0 && !LocalDate.parse(expiryDate).isBefore(LocalDate.now());
+    }
 }

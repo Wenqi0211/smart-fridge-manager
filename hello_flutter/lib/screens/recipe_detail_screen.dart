@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/recipe_recommendation.dart';
+import '../services/fridge_api_service.dart';
 import '../theme/smart_fridge_tokens.dart';
 
 /**
@@ -30,9 +31,16 @@ import '../theme/smart_fridge_tokens.dart';
  * https://github.com/flutter/samples/tree/main/material_3_demo
  */
 class RecipeDetailScreen extends StatefulWidget {
-  const RecipeDetailScreen({super.key, required this.recipe});
+  const RecipeDetailScreen({
+    super.key,
+    required this.recipe,
+    this.useLiveApi = true,
+    this.api,
+  });
 
   final RecipeRecommendation recipe;
+  final bool useLiveApi;
+  final FridgeApiService? api;
 
   @override
   State<RecipeDetailScreen> createState() => _RecipeDetailScreenState();
@@ -46,18 +54,157 @@ class RecipeDetailScreen extends StatefulWidget {
  */
 class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
   bool _saved = false;
+  late RecipeRecommendation _recipe;
+  bool _loading = false;
+  String? _detailError;
+  bool _adding = false;
+  bool _added = false;
+  bool _addFailed = false;
+  bool _addOutcomeUnknown = false;
+  String? _groceryMessage;
+
+  FridgeApiService get _api => widget.api ?? FridgeApiService.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _recipe = widget.recipe;
+    if (widget.useLiveApi) _loadDetail();
+  }
+
+  @override
+  void didUpdateWidget(covariant RecipeDetailScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.recipe.id != widget.recipe.id ||
+        oldWidget.useLiveApi != widget.useLiveApi) {
+      _recipe = widget.recipe;
+      _added = false;
+      _addOutcomeUnknown = false;
+      _groceryMessage = null;
+      if (widget.useLiveApi) _loadDetail();
+    }
+  }
+
+  Future<void> _loadDetail() async {
+    setState(() {
+      _loading = true;
+      _detailError = null;
+    });
+    try {
+      final recipe = await _api.fetchRecipeDetail(widget.recipe.id);
+      if (!mounted) return;
+      setState(() => _recipe = recipe);
+    } catch (_) {
+      if (!mounted) return;
+      setState(
+        () => _detailError = 'Could not load this recipe. Please try again.',
+      );
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  Future<void> _addMissingIngredients() async {
+    if (_adding || _added || _addOutcomeUnknown) return;
+    setState(() {
+      _adding = true;
+      _addFailed = false;
+      _groceryMessage = null;
+    });
+    try {
+      final result = await _api.addMissingIngredientsToGrocery(_recipe.id);
+      if (!mounted) return;
+      setState(() {
+        _added = true;
+        _groceryMessage =
+            '${result.addedCount} added, ${result.mergedCount} merged into your grocery list.';
+      });
+    } catch (error) {
+      if (!mounted) return;
+      final rejected =
+          error is FridgeApiException &&
+          const [400, 401, 403, 404, 409].contains(error.statusCode);
+      setState(() {
+        _addFailed = true;
+        _addOutcomeUnknown = !rejected;
+        _groceryMessage = !rejected
+            ? 'We could not confirm whether ingredients were added. Check your grocery list before adding another batch.'
+            : error.code == 'QUANTITY_LIMIT_EXCEEDED'
+            ? 'A grocery quantity is too high. Reduce it before adding this recipe.'
+            : 'Could not add ingredients. Please try again.';
+      });
+    } finally {
+      if (mounted) setState(() => _adding = false);
+    }
+  }
+
+  Future<void> _confirmAnotherBatch() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Add another batch?'),
+        content: const Text(
+          'The previous request may already have added these ingredients. '
+          'Check your grocery list first. Adding again may double the quantities.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: const Text('Add another batch'),
+          ),
+        ],
+      ),
+    );
+    if (!mounted || confirmed != true) return;
+    setState(() => _addOutcomeUnknown = false);
+    await _addMissingIngredients();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final recipe = widget.recipe;
+    if (widget.useLiveApi && (_loading || _detailError != null)) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Recipe details')),
+        body: Center(
+          child: _loading
+              ? const CircularProgressIndicator()
+              : Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(_detailError!, textAlign: TextAlign.center),
+                      const SizedBox(height: 12),
+                      FilledButton(
+                        onPressed: _loadDetail,
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                ),
+        ),
+      );
+    }
+    final recipe = _recipe;
     final ingredients = _ingredientRows(recipe);
     final fromFridge = ingredients.where((e) => e.inFridge).length;
-    final match = ((fromFridge / ingredients.length) * 100).round();
+    final match = widget.useLiveApi
+        ? recipe.matchPercent.clamp(0, 100).toInt()
+        : ingredients.isEmpty
+        ? 0
+        : ((fromFridge / ingredients.length) * 100).round();
     final reviews = 124;
     final totalCook = recipe.prepMinutes + 5;
 
     return Scaffold(
       backgroundColor: SfColors.cream,
+      bottomNavigationBar: widget.useLiveApi
+          ? _groceryAction(ingredients)
+          : null,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, c) {
@@ -77,6 +224,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                   match: match,
                   ingredients: ingredients,
                   onBack: () => Navigator.of(context).pop(),
+                  isLive: widget.useLiveApi,
                 ),
                 Expanded(
                   child: Column(
@@ -89,10 +237,15 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                               Positioned(
                                 top: 18,
                                 left: 22,
-                                child: _ReviewPill(
-                                  rating: recipe.rating,
-                                  reviews: reviews,
-                                ),
+                                child: widget.useLiveApi
+                                    ? _TagPill(
+                                        label: 'Rating ${recipe.rating}',
+                                        fill: SfColors.chipBgLight,
+                                      )
+                                    : _ReviewPill(
+                                        rating: recipe.rating,
+                                        reviews: reviews,
+                                      ),
                               ),
                               Positioned(
                                 top: 14,
@@ -103,9 +256,8 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                                       icon: _saved
                                           ? Icons.bookmark
                                           : Icons.bookmark_border,
-                                      onTap: () => setState(
-                                            () => _saved = !_saved,
-                                      ),
+                                      onTap: () =>
+                                          setState(() => _saved = !_saved),
                                     ),
                                     const SizedBox(width: 8),
                                     const _CircleIconButton(
@@ -117,12 +269,18 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                               Positioned(
                                 left: 18,
                                 bottom: 16,
-                                child: _TimelinePill(
-                                  prep: recipe.prepMinutes,
-                                  cook: 5,
-                                  total: totalCook,
-                                  serves: 2,
-                                ),
+                                child: widget.useLiveApi
+                                    ? _TagPill(
+                                        label:
+                                            '${recipe.prepMinutes} min cook time',
+                                        fill: SfColors.chipBgLight,
+                                      )
+                                    : _TimelinePill(
+                                        prep: recipe.prepMinutes,
+                                        cook: 5,
+                                        total: totalCook,
+                                        serves: 2,
+                                      ),
                               ),
                             ],
                           ),
@@ -136,7 +294,9 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                               Expanded(
                                 child: _IngredientTile(
                                   item: item,
-                                  kcal: _kcalFor(item.name),
+                                  kcal: widget.useLiveApi
+                                      ? null
+                                      : _kcalFor(item.name),
                                 ),
                               ),
                           ],
@@ -153,6 +313,57 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
     );
   }
 
+  Widget _groceryAction(List<_IngredientItem> ingredients) {
+    final hasMissing = ingredients.any((item) => !item.inFridge);
+    final label = _adding
+        ? 'Adding ingredients…'
+        : _added
+        ? 'Added to grocery list'
+        : _addOutcomeUnknown
+        ? 'Result unconfirmed'
+        : ingredients.isEmpty
+        ? 'No required ingredients listed'
+        : !hasMissing
+        ? 'All required ingredients are in your fridge'
+        : 'Add missing ingredients';
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (_groceryMessage != null) ...[
+              Text(
+                _groceryMessage!,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: _addFailed ? Colors.red.shade700 : SfColors.matchGreen,
+                ),
+              ),
+              const SizedBox(height: 8),
+            ],
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                onPressed:
+                    _adding || _added || _addOutcomeUnknown || !hasMissing
+                    ? null
+                    : _addMissingIngredients,
+                icon: const Icon(Icons.playlist_add),
+                label: Text(label),
+              ),
+            ),
+            if (_addOutcomeUnknown)
+              TextButton(
+                onPressed: _confirmAnotherBatch,
+                child: const Text('Add another batch…'),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
   /**
    * Builds ingredient rows for the detail screen.
    * <p>
@@ -161,17 +372,18 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
    */
   List<_IngredientItem> _ingredientRows(RecipeRecommendation recipe) {
     final details = recipe.ingredientDetails;
-    if (details != null && details.isNotEmpty) {
+    if (details != null && (details.isNotEmpty || widget.useLiveApi)) {
       return details
           .map(
             (d) => _IngredientItem(
-          name: d.name,
-          amount: d.quantityText.isEmpty ? '—' : d.quantityText,
-          inFridge: d.inFridge,
-        ),
-      )
+              name: d.name,
+              amount: d.quantityText.isEmpty ? '—' : d.quantityText,
+              inFridge: d.inFridge,
+            ),
+          )
           .toList();
     }
+    if (widget.useLiveApi) return const [];
     final rows = <_IngredientItem>[];
     for (final tag in recipe.ingredientTags) {
       rows.add(
@@ -273,12 +485,14 @@ class _RecipeInfoRail extends StatelessWidget {
     required this.match,
     required this.ingredients,
     required this.onBack,
+    required this.isLive,
   });
 
   final RecipeRecommendation recipe;
   final int match;
   final List<_IngredientItem> ingredients;
   final VoidCallback onBack;
+  final bool isLive;
 
   @override
   Widget build(BuildContext context) {
@@ -304,17 +518,21 @@ class _RecipeInfoRail extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              const Text(
-                '· SmartFridge',
-                style: TextStyle(color: SfColors.brownMuted, fontSize: 12),
+              const Flexible(
+                child: Text(
+                  '· SmartFridge',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: SfColors.brownMuted, fontSize: 12),
+                ),
               ),
             ],
           ),
           const SizedBox(height: 8),
-          Row(
+          Wrap(
+            spacing: 8,
+            runSpacing: 6,
             children: [
               _TagPill(label: recipe.slot.label, fill: SfColors.chipBgLight),
-              const SizedBox(width: 8),
               _TagPill(
                 label: '${recipe.matchPercent}% match',
                 fill: const Color(0xFFEAF6EC),
@@ -335,8 +553,10 @@ class _RecipeInfoRail extends StatelessWidget {
           const SizedBox(height: 14),
           Text(
             (recipe.description != null &&
-                recipe.description!.trim().isNotEmpty)
+                    recipe.description!.trim().isNotEmpty)
                 ? recipe.description!.trim()
+                : isLive
+                ? 'No preparation instructions provided.'
                 : 'A rich, protein-packed breakfast made from ingredients already in your fridge.',
             style: TextStyle(
               color: SfColors.brownLabel.withValues(alpha: 0.86),
@@ -380,10 +600,8 @@ class _RecipeInfoRail extends StatelessWidget {
           Expanded(
             child: ListView.separated(
               itemCount: ingredients.length,
-              separatorBuilder: (context, index) => const Divider(
-                height: 1,
-                color: Color(0xFFE7DED1),
-              ),
+              separatorBuilder: (context, index) =>
+                  const Divider(height: 1, color: Color(0xFFE7DED1)),
               itemBuilder: (context, i) {
                 final item = ingredients[i];
                 return Padding(
@@ -437,24 +655,25 @@ class _RecipeInfoRail extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              style: FilledButton.styleFrom(
-                backgroundColor: SfColors.brown,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(SfRadii.pill),
+          if (!isLive)
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                style: FilledButton.styleFrom(
+                  backgroundColor: SfColors.brown,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(SfRadii.pill),
+                  ),
+                ),
+                onPressed: () {},
+                child: const Text(
+                  'Start Cooking →',
+                  style: TextStyle(fontWeight: FontWeight.w700),
                 ),
               ),
-              onPressed: () {},
-              child: const Text(
-                'Start Cooking →',
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
             ),
-          ),
         ],
       ),
     );
@@ -558,7 +777,7 @@ class _MobileRecipeDetail extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               ...ingredients.map(
-                    (e) => ListTile(
+                (e) => ListTile(
                   dense: true,
                   contentPadding: EdgeInsets.zero,
                   leading: Icon(
@@ -650,10 +869,7 @@ class _InfoMiniCard extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             label,
-            style: const TextStyle(
-              fontSize: 12,
-              color: SfColors.brownMuted,
-            ),
+            style: const TextStyle(fontSize: 12, color: SfColors.brownMuted),
           ),
         ],
       ),
@@ -706,7 +922,7 @@ class _MatchCard extends StatelessWidget {
           ),
           const SizedBox(height: 3),
           const Text(
-            'Ingredient match — all essentials in fridge',
+            'Required ingredients available',
             style: TextStyle(fontSize: 12, color: SfColors.brownMuted),
           ),
         ],
@@ -741,11 +957,7 @@ class _TagPill extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w700,
-          color: fg,
-        ),
+        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: fg),
       ),
     );
   }
@@ -793,10 +1005,7 @@ class _ReviewPill extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             '$reviews reviews',
-            style: const TextStyle(
-              fontSize: 11,
-              color: SfColors.brownMuted,
-            ),
+            style: const TextStyle(fontSize: 11, color: SfColors.brownMuted),
           ),
         ],
       ),
@@ -936,7 +1145,7 @@ class _IngredientTile extends StatelessWidget {
   const _IngredientTile({required this.item, required this.kcal});
 
   final _IngredientItem item;
-  final int kcal;
+  final int? kcal;
 
   @override
   Widget build(BuildContext context) {
@@ -957,9 +1166,7 @@ class _IngredientTile extends StatelessWidget {
             child: Icon(
               Icons.circle,
               size: 6,
-              color: item.inFridge
-                  ? SfColors.matchGreen
-                  : SfColors.chipBgLight,
+              color: item.inFridge ? SfColors.matchGreen : SfColors.chipBgLight,
             ),
           ),
           const SizedBox(height: 10),
@@ -975,10 +1182,7 @@ class _IngredientTile extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             item.inFridge ? 'In fridge' : 'Need to buy',
-            style: const TextStyle(
-              color: SfColors.brownMuted,
-              fontSize: 11,
-            ),
+            style: const TextStyle(color: SfColors.brownMuted, fontSize: 11),
           ),
           const Spacer(),
           Center(
@@ -994,11 +1198,8 @@ class _IngredientTile extends StatelessWidget {
           const Spacer(),
           Center(
             child: Text(
-              '${item.amount} · $kcal kcal',
-              style: const TextStyle(
-                color: SfColors.brownMuted,
-                fontSize: 12,
-              ),
+              kcal == null ? item.amount : '${item.amount} · $kcal kcal',
+              style: const TextStyle(color: SfColors.brownMuted, fontSize: 12),
             ),
           ),
         ],

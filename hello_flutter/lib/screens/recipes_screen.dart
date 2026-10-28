@@ -255,7 +255,8 @@ class _RecipesScreenState extends State<RecipesScreen> {
   void _openRecipe(RecipeRecommendation r) {
     Navigator.of(context).push<void>(
       MaterialPageRoute<void>(
-        builder: (_) => RecipeDetailScreen(recipe: r),
+        builder: (_) =>
+            RecipeDetailScreen(recipe: r, useLiveApi: widget.useLiveApi),
       ),
     );
   }
@@ -265,7 +266,8 @@ class _RecipesScreenState extends State<RecipesScreen> {
     final filtered = _filtered;
     final total = _catalog.length;
     final wide = MediaQuery.sizeOf(context).width >= 720;
-    final subtitle = 'Matched to your fridge · ${filtered.length} recipes found';
+    final subtitle =
+        'Matched to your fridge · ${filtered.length} recipes found';
 
     final body = ColoredBox(
       color: SfColors.cream,
@@ -290,7 +292,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                     padding: const EdgeInsets.all(12),
                     child: Text(
                       'API unavailable — showing demo recipes. '
-                          './gradlew bootRun · $_apiError',
+                      './gradlew bootRun · $_apiError',
                       style: TextStyle(
                         color: Colors.orange.shade900,
                         fontSize: 13,
@@ -305,62 +307,62 @@ class _RecipesScreenState extends State<RecipesScreen> {
             sliver: SliverToBoxAdapter(
               child: wide
                   ? Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Recommended Recipes',
+                                style: TextStyle(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w800,
+                                  color: SfColors.brown,
+                                  height: 1.1,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                subtitle,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: SfColors.brownMuted,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 420,
+                          child: _RecipeSearchRow(controller: _search),
+                        ),
+                      ],
+                    )
+                  : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Recommended Recipes',
                           style: TextStyle(
-                            fontSize: 32,
+                            fontSize: 28,
                             fontWeight: FontWeight.w800,
                             color: SfColors.brown,
-                            height: 1.1,
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           subtitle,
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 14,
                             color: SfColors.brownMuted,
-                            fontWeight: FontWeight.w500,
                           ),
                         ),
+                        const SizedBox(height: 16),
+                        _RecipeSearchRow(controller: _search),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    width: 420,
-                    child: _RecipeSearchRow(controller: _search),
-                  ),
-                ],
-              )
-                  : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Recommended Recipes',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w800,
-                      color: SfColors.brown,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    subtitle,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: SfColors.brownMuted,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  _RecipeSearchRow(controller: _search),
-                ],
-              ),
             ),
           ),
           SliverToBoxAdapter(
@@ -450,25 +452,22 @@ class _RecipesScreenState extends State<RecipesScreen> {
                     crossAxisSpacing: 18,
                     mainAxisExtent: 312,
                   ),
-                  delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                      final r = filtered[index];
-                      final saved = _savedIds.contains(r.id);
-                      return _RecipeCard(
-                        recipe: r,
-                        saved: saved,
-                        onToggleSave: () => setState(() {
-                          if (saved) {
-                            _savedIds.remove(r.id);
-                          } else {
-                            _savedIds.add(r.id);
-                          }
-                        }),
-                        onOpen: () => _openRecipe(r),
-                      );
-                    },
-                    childCount: filtered.length,
-                  ),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final r = filtered[index];
+                    final saved = _savedIds.contains(r.id);
+                    return _RecipeCard(
+                      recipe: r,
+                      saved: saved,
+                      onToggleSave: () => setState(() {
+                        if (saved) {
+                          _savedIds.remove(r.id);
+                        } else {
+                          _savedIds.add(r.id);
+                        }
+                      }),
+                      onOpen: () => _openRecipe(r),
+                    );
+                  }, childCount: filtered.length),
                 );
               },
             ),
@@ -477,10 +476,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
       ),
     );
 
-    return Scaffold(
-      backgroundColor: SfColors.cream,
-      body: body,
-    );
+    return Scaffold(backgroundColor: SfColors.cream, body: body);
   }
 }
 
@@ -557,10 +553,7 @@ class _RecipeSearchRow extends StatelessWidget {
  * https://api.flutter.dev/flutter/widgets/Row-class.html
  */
 class _MealSlotStrip extends StatelessWidget {
-  const _MealSlotStrip({
-    required this.selected,
-    required this.onSelect,
-  });
+  const _MealSlotStrip({required this.selected, required this.onSelect});
 
   final RecipeMealSlot selected;
   final ValueChanged<RecipeMealSlot> onSelect;
@@ -803,25 +796,26 @@ class _RecipeCard extends StatelessWidget {
                           .take(3)
                           .map(
                             (t) => Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: SfColors.chipBgLight,
-                            borderRadius:
-                            BorderRadius.circular(SfRadii.pill),
-                          ),
-                          child: Text(
-                            t,
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: SfColors.brown,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: SfColors.chipBgLight,
+                                borderRadius: BorderRadius.circular(
+                                  SfRadii.pill,
+                                ),
+                              ),
+                              child: Text(
+                                t,
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: SfColors.brown,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      )
+                          )
                           .toList(),
                     ),
                     const Spacer(),
@@ -845,10 +839,7 @@ class _RecipeCard extends StatelessWidget {
                           ),
                         ),
                         const Spacer(),
-                        Icon(
-                          Icons.chevron_right,
-                          color: SfColors.brownMuted,
-                        ),
+                        Icon(Icons.chevron_right, color: SfColors.brownMuted),
                       ],
                     ),
                   ],

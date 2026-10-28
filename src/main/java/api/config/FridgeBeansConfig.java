@@ -11,6 +11,8 @@ import model.FoodCatalogEntry;
 import model.Recipe;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import service.FoodCatalog;
 import service.GroceryService;
 import service.IFoodCatalog;
@@ -49,22 +51,26 @@ public class FridgeBeansConfig {
     }
 
     @Bean
+    @Scope(value = "authenticatedUser", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public InventoryService inventoryService(IFoodCatalog foodCatalog) {
         return new InventoryService(foodCatalog);
     }
 
     @Bean
+    @Scope(value = "authenticatedUser", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public IPreferenceService preferenceService() {
         return new PreferenceService();
     }
 
     @Bean
+    @Scope(value = "authenticatedUser", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public RecommendationService recommendationService(IFoodCatalog foodCatalog) {
         List<Recipe> recipes = JsonRecipeLoader.loadFromFileSafe(RECIPE_RESOURCE);
         return new RecommendationService(recipes, foodCatalog);
     }
 
     @Bean
+    @Scope(value = "authenticatedUser", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public IGroceryService groceryService() {
         return new GroceryService(new ArrayList<>());
     }

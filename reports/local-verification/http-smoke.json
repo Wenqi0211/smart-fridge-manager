@@ -1,0 +1,311 @@
+{
+  "generatedAtUtc": "2026-10-28T05:56:03.109547+00:00",
+  "baseUrl": "http://127.0.0.1:18081",
+  "transport": "real HTTP to local Spring Boot server",
+  "sourceAndTestSha256": "ad21a487ac96a6d515cf82a86fa96f048c64ffeca3d0ea00a62ecc5b9cd53e2a",
+  "passed": 60,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "Missing bearer token rejected",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "name": "Malformed bearer token rejected",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "name": "Alice registers",
+      "status": 201,
+      "passed": true
+    },
+    {
+      "name": "Bob registers",
+      "status": 201,
+      "passed": true
+    },
+    {
+      "name": "Alice adds inventory",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Alice saves preference",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Alice sees own inventory",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Bob inventory remains empty",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Bob preference remains unset",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Recipe adds two missing ingredients",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Second recipe plan merges both lines",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Alice sees two merged grocery lines",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Bob cannot alter Alice quantity",
+      "status": 404,
+      "passed": true
+    },
+    {
+      "name": "Bob cannot collect Alice item",
+      "status": 404,
+      "passed": true
+    },
+    {
+      "name": "Bob cannot delete Alice item",
+      "status": 404,
+      "passed": true
+    },
+    {
+      "name": "Bob sees no groceries",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Bob checks out own state only",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Alice grocery survives Bob checkout",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Alice logs in again",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "New token retains same owner state",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Alice checks out",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Alice groceries cleared",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Alice inventory cleared",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Alice preference cleared",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Boundary-test user registers",
+      "status": 201,
+      "passed": true
+    },
+    {
+      "name": "Negative quantity rejected",
+      "status": 400,
+      "passed": true
+    },
+    {
+      "name": "Negative price rejected",
+      "status": 400,
+      "passed": true
+    },
+    {
+      "name": "Non-finite price rejected",
+      "status": 400,
+      "passed": true
+    },
+    {
+      "name": "Excessive price rejected",
+      "status": 400,
+      "passed": true
+    },
+    {
+      "name": "Malformed JSON rejected",
+      "status": 400,
+      "passed": true
+    },
+    {
+      "name": "Fractional quantity rejected",
+      "status": 400,
+      "passed": true
+    },
+    {
+      "name": "Null numeric field rejected",
+      "status": 400,
+      "passed": true
+    },
+    {
+      "name": "Invalid requests leave groceries empty",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Maximum integer quantity accepted",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Missing delta rejected",
+      "status": 400,
+      "passed": true
+    },
+    {
+      "name": "Invalid delta rejected",
+      "status": 400,
+      "passed": true
+    },
+    {
+      "name": "Overflow rejected instead of resetting quantity",
+      "status": 409,
+      "passed": true
+    },
+    {
+      "name": "Recipe overflow rejected before any mutation",
+      "status": 409,
+      "passed": true
+    },
+    {
+      "name": "Failed quantity and recipe updates preserve original list",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Largest negative delta floors quantity at zero",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Boundary user checks out",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent-test grocery created",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent quantity increment 1",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent quantity increment 2",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent quantity increment 4",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent quantity increment 3",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent collected toggle 1",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent collected toggle 2",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent collected toggle 4",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent collected toggle 3",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent quantity increment 5",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent quantity increment 6",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent quantity increment 7",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent quantity increment 8",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent collected toggle 5",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent collected toggle 6",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent collected toggle 7",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent collected toggle 8",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent requests retain exact quantity and toggle parity",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Concurrent owner mutations do not affect Bob",
+      "status": 200,
+      "passed": true
+    }
+  ],
+  "limit": "Functional smoke checks only; not a throughput or latency benchmark."
+}

@@ -1,0 +1,467 @@
+{
+  "generatedAtUtc": "2026-10-28T05:56:59.024404+00:00",
+  "baseGitCommit": "7c97b4b33aa2bcac82b72d90a0c23a14af512005",
+  "sourceAndTestSha256": "ad21a487ac96a6d515cf82a86fa96f048c64ffeca3d0ea00a62ecc5b9cd53e2a",
+  "scope": "All compiled Java main-source classes; no class exclusions; Flutter is separate.",
+  "testResults": {
+    "tests": 197,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "name": "API.config.TestFridgeBeansConfig",
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "API.dto.TestGroceryAddRequest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "API.dto.TestRecipeDetailResponse",
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "API.dto.TestRecipeIngredientStatusResponse",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "API.dto.TestRecipeToGroceryResponse",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "API.security.TestAuthenticatedWorkflow",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "API.security.TestRequestBoundaries",
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "API.web.TestCatalogApiController",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "API.web.TestGroceryApiController",
+        "tests": 13,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "API.web.TestInventoryApiController",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "API.web.TestPreferenceApiController",
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "API.web.TestRecommendationApiController",
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "controller.TestCatalogController",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "controller.TestGroceryController",
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "controller.TestInventoryController",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "controller.TestPreferenceController",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "controller.TestRecommendationController",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "loader.TestDemoInventoryLoader",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "model.TestFoodCatalogEntry",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "model.TestFoodCategory",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "model.TestFoodItem",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "model.TestGroceryItem",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "model.TestHealthGoal",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "model.TestPreference",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "model.TestRecipe",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "model.TestRecipeCategory",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "service.TestFoodCatalog",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "service.TestGroceryService",
+        "tests": 18,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "service.TestInventoryService",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "service.TestPreferenceService",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "service.TestRecommendationBoundaries",
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "service.TestRecommendationService",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "service.TestSessionResetService",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "ui.TestConsoleApp",
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ]
+  },
+  "coverage": {
+    "instruction": {
+      "covered": 4266,
+      "missed": 1120,
+      "total": 5386,
+      "percent": 79.21
+    },
+    "branch": {
+      "covered": 303,
+      "missed": 157,
+      "total": 460,
+      "percent": 65.87
+    },
+    "line": {
+      "covered": 996,
+      "missed": 270,
+      "total": 1266,
+      "percent": 78.67
+    },
+    "complexity": {
+      "covered": 436,
+      "missed": 166,
+      "total": 602,
+      "percent": 72.43
+    },
+    "method": {
+      "covered": 333,
+      "missed": 38,
+      "total": 371,
+      "percent": 89.76
+    },
+    "class": {
+      "covered": 52,
+      "missed": 5,
+      "total": 57,
+      "percent": 91.23
+    }
+  },
+  "layers": {
+    "controller": {
+      "line": {
+        "covered": 50,
+        "missed": 1,
+        "total": 51,
+        "percent": 98.04
+      },
+      "branch": {
+        "covered": 0,
+        "missed": 0,
+        "total": 0,
+        "percent": null
+      }
+    },
+    "api": {
+      "line": {
+        "covered": 487,
+        "missed": 25,
+        "total": 512,
+        "percent": 95.12
+      },
+      "branch": {
+        "covered": 165,
+        "missed": 45,
+        "total": 210,
+        "percent": 78.57
+      }
+    },
+    "ui": {
+      "line": {
+        "covered": 43,
+        "missed": 190,
+        "total": 233,
+        "percent": 18.45
+      },
+      "branch": {
+        "covered": 25,
+        "missed": 67,
+        "total": 92,
+        "percent": 27.17
+      }
+    },
+    "service": {
+      "line": {
+        "covered": 215,
+        "missed": 26,
+        "total": 241,
+        "percent": 89.21
+      },
+      "branch": {
+        "covered": 74,
+        "missed": 20,
+        "total": 94,
+        "percent": 78.72
+      }
+    },
+    "loader": {
+      "line": {
+        "covered": 76,
+        "missed": 27,
+        "total": 103,
+        "percent": 73.79
+      },
+      "branch": {
+        "covered": 34,
+        "missed": 24,
+        "total": 58,
+        "percent": 58.62
+      }
+    },
+    "model": {
+      "line": {
+        "covered": 125,
+        "missed": 1,
+        "total": 126,
+        "percent": 99.21
+      },
+      "branch": {
+        "covered": 5,
+        "missed": 1,
+        "total": 6,
+        "percent": 83.33
+      }
+    }
+  },
+  "instrumentedClasses": 70,
+  "classes": [
+    "api/SmartFridgeApiApplication",
+    "api/config/CorsConfig",
+    "api/config/FridgeBeansConfig",
+    "api/config/SecurityConfig",
+    "api/dto/AddFoodRequest",
+    "api/dto/FoodItemResponse",
+    "api/dto/GroceryAddRequest",
+    "api/dto/PreferenceRequest",
+    "api/dto/RecipeDetailResponse",
+    "api/dto/RecipeDetailResponse$QuantitySpec",
+    "api/dto/RecipeIngredientStatusResponse",
+    "api/dto/RecipeToGroceryResponse",
+    "api/security/AccountService",
+    "api/security/AccountService$Account",
+    "api/security/AuthenticatedUserScope",
+    "api/security/AuthenticatedUserScope$UserObjects",
+    "api/security/UserOperationFilter",
+    "api/web/ApiErrorAdvice",
+    "api/web/AuthApiController",
+    "api/web/AuthApiController$Credentials",
+    "api/web/CatalogApiController",
+    "api/web/GroceryApiController",
+    "api/web/InventoryApiController",
+    "api/web/PreferenceApiController",
+    "api/web/RecommendationApiController",
+    "controller/CatalogController",
+    "controller/GroceryController",
+    "controller/InventoryController",
+    "controller/PreferenceController",
+    "controller/RecommendationController",
+    "loader/DemoInventoryLoader",
+    "loader/DemoInventoryLoader$1",
+    "loader/DemoInventoryLoader$DemoInventoryRow",
+    "loader/FoodCatalogJsonFile",
+    "loader/JsonFoodCatalogLoader",
+    "loader/JsonFoodCatalogLoader$CategoryDto",
+    "loader/JsonFoodCatalogLoader$FoodCatalogEntryDto",
+    "loader/JsonFoodCatalogLoader$FoodCatalogFile",
+    "loader/JsonRecipeLoader",
+    "loader/JsonRecipeLoader$CategoryDto",
+    "loader/JsonRecipeLoader$IngredientDto",
+    "loader/JsonRecipeLoader$RecipeDto",
+    "loader/JsonRecipeLoader$RecipeFile",
+    "loader/RecipeJsonFile",
+    "model/FoodCatalogEntry",
+    "model/FoodCategory",
+    "model/FoodItem",
+    "model/GroceryItem",
+    "model/HealthGoal",
+    "model/Preference",
+    "model/Recipe",
+    "model/Recipe$HealthTag",
+    "model/Recipe$Ingredient",
+    "model/RecipeCategory",
+    "service/FoodCatalog",
+    "service/GroceryQuantityLimitException",
+    "service/GroceryService",
+    "service/IFoodCatalog",
+    "service/IGroceryService",
+    "service/IInventoryService",
+    "service/IPreferenceService",
+    "service/IRecommendationService",
+    "service/InventoryManager",
+    "service/InventoryService",
+    "service/PreferenceService",
+    "service/RecommendationService",
+    "service/SessionReset",
+    "ui/ConsoleApp",
+    "ui/Main",
+    "ui/SmartFridgeApp"
+  ],
+  "artifacts": {
+    "junit": "build/test-results/test",
+    "jacocoXml": "build/reports/jacoco/test/jacocoTestReport.xml",
+    "jacocoHtml": "build/reports/jacoco/test/html/index.html"
+  },
+  "limits": [
+    "Local functional verification; not production traffic or a cloud deployment.",
+    "No recipe quality/accuracy improvement or business impact was measured.",
+    "Accounts, inventory, preferences, recommendations and groceries are process-local memory.",
+    "Grocery quantities retain the original simplified unit model; no cross-unit conversion or inventory consumption."
+  ],
+  "httpSmoke": {
+    "generatedAtUtc": "2026-10-28T05:56:03.109547+00:00",
+    "transport": "real HTTP to local Spring Boot server",
+    "passed": 60,
+    "failed": 0,
+    "report": "reports/local-verification/http-smoke.json"
+  }
+}

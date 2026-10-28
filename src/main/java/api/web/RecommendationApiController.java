@@ -14,6 +14,9 @@ import model.GroceryItem;
 import model.Preference;
 import model.Recipe;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+import service.GroceryQuantityLimitException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -122,7 +127,7 @@ public class RecommendationApiController {
         Preference preference = preferenceController.getPreference();
         Recipe recipe = recommendationController.getRecommendationById(inventory, preference, id);
         if (recipe == null) {
-            return ResponseEntity.notFound().build();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Recipe not found");
         }
 
         // 真正把 recipe 组装成 detail response 的重活，
@@ -150,7 +155,7 @@ public class RecommendationApiController {
         Preference preference = preferenceController.getPreference();
         Recipe recipe = recommendationController.getRecommendationById(inventory, preference, id);
         if (recipe == null) {
-            return ResponseEntity.notFound().build();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Recipe not found");
         }
 
         // 这个 response 主要是给前端一个交代：
@@ -162,26 +167,36 @@ public class RecommendationApiController {
         List<GroceryItem> added = new ArrayList<>();
         List<String> merged = new ArrayList<>();
 
-        // 这里只处理 required ingredients。
-        // optional ingredients 就算缺，也不强行塞进购物清单。
+        // Preflight the complete plan before mutating a row. This keeps an overflow on a
+        // later ingredient from leaving an earlier ingredient added or incremented.
+        Map<String, String> names = new LinkedHashMap<>();
+        Map<String, Long> quantities = new LinkedHashMap<>();
         for (Recipe.Ingredient ingredient : recipe.getRequiredIngredients()) {
-            // 如果这项并不缺，就直接跳过。
-            if (!isMissingRequiredIngredient(recipe, ingredient)) {
+            if (ingredient.isOptional() || !isMissingRequiredIngredient(recipe, ingredient)) {
                 continue;
             }
-
-            // 先尽量把名字统一成 catalog 里的标准写法，
-            // 这样不容易因为别名不同而产生重复项。
             String canonical = catalogController.canonicalFoodName(ingredient.getName());
+            String key = norm(canonical);
+            names.putIfAbsent(key, canonical);
+            long needed = quantities.getOrDefault(key, 0L)
+                    + parseQuantityAsPositiveInt(ingredient.getQuantityText());
+            if (needed > Integer.MAX_VALUE) {
+                throw new GroceryQuantityLimitException();
+            }
+            quantities.put(key, needed);
+        }
+        for (Map.Entry<String, Long> plan : quantities.entrySet()) {
+            GroceryItem existing = findExistingGroceryItem(names.get(plan.getKey()));
+            if (existing != null && (long) existing.getQuantity() + plan.getValue() > Integer.MAX_VALUE) {
+                throw new GroceryQuantityLimitException();
+            }
+        }
 
-            // quantityText 可能写成 "2 count"、"1 clove" 之类，
-            // 这里尽量取出一个正整数；实在读不出来就默认 1。
-            int neededQty = parseQuantityAsPositiveInt(ingredient.getQuantityText());
-
-            // 先看购物清单里是不是已经有这一项了。
+        for (Map.Entry<String, Long> plan : quantities.entrySet()) {
+            String canonical = names.get(plan.getKey());
+            int neededQty = plan.getValue().intValue();
             GroceryItem existing = findExistingGroceryItem(canonical);
             if (existing != null) {
-                // 已经有了就不再插入新行，而是把数量往上加。
                 groceryController.updateQuantity(existing.getId(), neededQty);
                 merged.add(existing.getName());
                 continue;

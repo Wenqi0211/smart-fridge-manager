@@ -1,0 +1,462 @@
+<?xml version='1.0' encoding='utf-8'?>
+<jacoco-summary source="build/reports/jacoco/test/jacocoTestReport.xml" scope="all compiled production classes; no exclusions">
+  <counter type="INSTRUCTION" missed="1120" covered="4266" />
+  <counter type="BRANCH" missed="157" covered="303" />
+  <counter type="LINE" missed="270" covered="996" />
+  <counter type="COMPLEXITY" missed="166" covered="436" />
+  <counter type="METHOD" missed="38" covered="333" />
+  <counter type="CLASS" missed="5" covered="52" />
+  <package name="controller">
+    <class name="controller/InventoryController">
+      <counter type="INSTRUCTION" missed="0" covered="28" />
+      <counter type="LINE" missed="0" covered="8" />
+      <counter type="COMPLEXITY" missed="0" covered="6" />
+      <counter type="METHOD" missed="0" covered="6" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="controller/GroceryController">
+      <counter type="INSTRUCTION" missed="5" covered="67" />
+      <counter type="LINE" missed="1" covered="19" />
+      <counter type="COMPLEXITY" missed="1" covered="12" />
+      <counter type="METHOD" missed="1" covered="12" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="controller/RecommendationController">
+      <counter type="INSTRUCTION" missed="0" covered="43" />
+      <counter type="LINE" missed="0" covered="11" />
+      <counter type="COMPLEXITY" missed="0" covered="7" />
+      <counter type="METHOD" missed="0" covered="7" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="controller/PreferenceController">
+      <counter type="INSTRUCTION" missed="0" covered="15" />
+      <counter type="LINE" missed="0" covered="5" />
+      <counter type="COMPLEXITY" missed="0" covered="3" />
+      <counter type="METHOD" missed="0" covered="3" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="controller/CatalogController">
+      <counter type="INSTRUCTION" missed="0" covered="26" />
+      <counter type="LINE" missed="0" covered="7" />
+      <counter type="COMPLEXITY" missed="0" covered="5" />
+      <counter type="METHOD" missed="0" covered="5" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+  </package>
+  <package name="api/config">
+    <class name="api/config/FridgeBeansConfig">
+      <counter type="INSTRUCTION" missed="0" covered="72" />
+      <counter type="LINE" missed="0" covered="14" />
+      <counter type="COMPLEXITY" missed="0" covered="12" />
+      <counter type="METHOD" missed="0" covered="12" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/config/SecurityConfig">
+      <counter type="INSTRUCTION" missed="18" covered="193" />
+      <counter type="BRANCH" missed="6" covered="14" />
+      <counter type="LINE" missed="4" covered="34" />
+      <counter type="COMPLEXITY" missed="6" covered="13" />
+      <counter type="METHOD" missed="0" covered="9" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/config/CorsConfig">
+      <counter type="INSTRUCTION" missed="0" covered="49" />
+      <counter type="LINE" missed="0" covered="6" />
+      <counter type="COMPLEXITY" missed="0" covered="2" />
+      <counter type="METHOD" missed="0" covered="2" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+  </package>
+  <package name="api/dto">
+    <class name="api/dto/PreferenceRequest">
+      <counter type="INSTRUCTION" missed="0" covered="10" />
+      <counter type="LINE" missed="0" covered="4" />
+      <counter type="COMPLEXITY" missed="0" covered="3" />
+      <counter type="METHOD" missed="0" covered="3" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/dto/RecipeDetailResponse">
+      <counter type="INSTRUCTION" missed="8" covered="406" />
+      <counter type="BRANCH" missed="8" covered="38" />
+      <counter type="LINE" missed="2" covered="79" />
+      <counter type="COMPLEXITY" missed="8" covered="38" />
+      <counter type="METHOD" missed="0" covered="23" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/dto/RecipeDetailResponse$QuantitySpec">
+      <counter type="INSTRUCTION" missed="10" covered="61" />
+      <counter type="BRANCH" missed="5" covered="5" />
+      <counter type="LINE" missed="2" covered="14" />
+      <counter type="COMPLEXITY" missed="5" covered="5" />
+      <counter type="METHOD" missed="0" covered="5" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/dto/RecipeToGroceryResponse">
+      <counter type="INSTRUCTION" missed="0" covered="67" />
+      <counter type="LINE" missed="0" covered="21" />
+      <counter type="COMPLEXITY" missed="0" covered="13" />
+      <counter type="METHOD" missed="0" covered="13" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/dto/GroceryAddRequest">
+      <counter type="INSTRUCTION" missed="0" covered="27" />
+      <counter type="LINE" missed="0" covered="11" />
+      <counter type="COMPLEXITY" missed="0" covered="7" />
+      <counter type="METHOD" missed="0" covered="7" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/dto/RecipeIngredientStatusResponse">
+      <counter type="INSTRUCTION" missed="0" covered="59" />
+      <counter type="LINE" missed="0" covered="25" />
+      <counter type="COMPLEXITY" missed="0" covered="17" />
+      <counter type="METHOD" missed="0" covered="17" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/dto/FoodItemResponse">
+      <counter type="INSTRUCTION" missed="0" covered="72" />
+      <counter type="LINE" missed="0" covered="21" />
+      <counter type="COMPLEXITY" missed="0" covered="11" />
+      <counter type="METHOD" missed="0" covered="11" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/dto/AddFoodRequest">
+      <counter type="INSTRUCTION" missed="0" covered="10" />
+      <counter type="LINE" missed="0" covered="4" />
+      <counter type="COMPLEXITY" missed="0" covered="3" />
+      <counter type="METHOD" missed="0" covered="3" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+  </package>
+  <package name="ui">
+    <class name="ui/ConsoleApp">
+      <counter type="INSTRUCTION" missed="652" covered="162" />
+      <counter type="BRANCH" missed="67" covered="25" />
+      <counter type="LINE" missed="172" covered="43" />
+      <counter type="COMPLEXITY" missed="54" covered="7" />
+      <counter type="METHOD" missed="12" covered="3" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="ui/SmartFridgeApp">
+      <counter type="INSTRUCTION" missed="77" covered="0" />
+      <counter type="LINE" missed="15" covered="0" />
+      <counter type="COMPLEXITY" missed="2" covered="0" />
+      <counter type="METHOD" missed="2" covered="0" />
+      <counter type="CLASS" missed="1" covered="0" />
+    </class>
+    <class name="ui/Main">
+      <counter type="INSTRUCTION" missed="6" covered="0" />
+      <counter type="LINE" missed="3" covered="0" />
+      <counter type="COMPLEXITY" missed="2" covered="0" />
+      <counter type="METHOD" missed="2" covered="0" />
+      <counter type="CLASS" missed="1" covered="0" />
+    </class>
+  </package>
+  <package name="api/security">
+    <class name="api/security/UserOperationFilter">
+      <counter type="INSTRUCTION" missed="0" covered="28" />
+      <counter type="BRANCH" missed="0" covered="2" />
+      <counter type="LINE" missed="0" covered="11" />
+      <counter type="COMPLEXITY" missed="0" covered="3" />
+      <counter type="METHOD" missed="0" covered="2" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/security/AccountService$Account">
+      <counter type="INSTRUCTION" missed="0" covered="18" />
+      <counter type="LINE" missed="0" covered="7" />
+      <counter type="COMPLEXITY" missed="0" covered="3" />
+      <counter type="METHOD" missed="0" covered="3" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/security/AuthenticatedUserScope">
+      <counter type="INSTRUCTION" missed="24" covered="49" />
+      <counter type="BRANCH" missed="5" covered="3" />
+      <counter type="LINE" missed="5" covered="8" />
+      <counter type="COMPLEXITY" missed="8" covered="7" />
+      <counter type="METHOD" missed="4" covered="7" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/security/AccountService">
+      <counter type="INSTRUCTION" missed="2" covered="129" />
+      <counter type="BRANCH" missed="4" covered="24" />
+      <counter type="LINE" missed="0" covered="22" />
+      <counter type="COMPLEXITY" missed="4" covered="14" />
+      <counter type="METHOD" missed="0" covered="4" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/security/AuthenticatedUserScope$UserObjects">
+      <counter type="INSTRUCTION" missed="0" covered="13" />
+      <counter type="LINE" missed="0" covered="3" />
+      <counter type="COMPLEXITY" missed="0" covered="1" />
+      <counter type="METHOD" missed="0" covered="1" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+  </package>
+  <package name="api/web">
+    <class name="api/web/AuthApiController$Credentials">
+      <counter type="INSTRUCTION" missed="0" covered="3" />
+      <counter type="LINE" missed="0" covered="1" />
+      <counter type="COMPLEXITY" missed="0" covered="1" />
+      <counter type="METHOD" missed="0" covered="1" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/web/RecommendationApiController">
+      <counter type="INSTRUCTION" missed="24" covered="443" />
+      <counter type="BRANCH" missed="7" covered="35" />
+      <counter type="LINE" missed="5" covered="94" />
+      <counter type="COMPLEXITY" missed="7" covered="25" />
+      <counter type="METHOD" missed="0" covered="11" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/web/ApiErrorAdvice">
+      <counter type="INSTRUCTION" missed="4" covered="43" />
+      <counter type="BRANCH" missed="1" covered="1" />
+      <counter type="LINE" missed="0" covered="7" />
+      <counter type="COMPLEXITY" missed="1" covered="6" />
+      <counter type="METHOD" missed="0" covered="6" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/web/PreferenceApiController">
+      <counter type="INSTRUCTION" missed="0" covered="45" />
+      <counter type="BRANCH" missed="0" covered="6" />
+      <counter type="LINE" missed="0" covered="10" />
+      <counter type="COMPLEXITY" missed="0" covered="6" />
+      <counter type="METHOD" missed="0" covered="3" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/web/CatalogApiController">
+      <counter type="INSTRUCTION" missed="0" covered="17" />
+      <counter type="BRANCH" missed="0" covered="2" />
+      <counter type="LINE" missed="0" covered="6" />
+      <counter type="COMPLEXITY" missed="0" covered="3" />
+      <counter type="METHOD" missed="0" covered="2" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/web/GroceryApiController">
+      <counter type="INSTRUCTION" missed="22" covered="245" />
+      <counter type="BRANCH" missed="5" covered="21" />
+      <counter type="LINE" missed="4" covered="50" />
+      <counter type="COMPLEXITY" missed="5" covered="19" />
+      <counter type="METHOD" missed="1" covered="10" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/web/InventoryApiController">
+      <counter type="INSTRUCTION" missed="5" covered="78" />
+      <counter type="BRANCH" missed="4" covered="14" />
+      <counter type="LINE" missed="1" covered="18" />
+      <counter type="COMPLEXITY" missed="4" covered="8" />
+      <counter type="METHOD" missed="0" covered="3" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="api/web/AuthApiController">
+      <counter type="INSTRUCTION" missed="0" covered="82" />
+      <counter type="LINE" missed="0" covered="16" />
+      <counter type="COMPLEXITY" missed="0" covered="4" />
+      <counter type="METHOD" missed="0" covered="4" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+  </package>
+  <package name="service">
+    <class name="service/GroceryQuantityLimitException">
+      <counter type="INSTRUCTION" missed="0" covered="4" />
+      <counter type="LINE" missed="0" covered="2" />
+      <counter type="COMPLEXITY" missed="0" covered="1" />
+      <counter type="METHOD" missed="0" covered="1" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="service/IFoodCatalog" />
+    <class name="service/SessionReset">
+      <counter type="INSTRUCTION" missed="0" covered="9" />
+      <counter type="LINE" missed="0" covered="5" />
+      <counter type="COMPLEXITY" missed="0" covered="1" />
+      <counter type="METHOD" missed="0" covered="1" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="service/IInventoryService" />
+    <class name="service/FoodCatalog">
+      <counter type="INSTRUCTION" missed="22" covered="139" />
+      <counter type="BRANCH" missed="8" covered="14" />
+      <counter type="LINE" missed="5" covered="33" />
+      <counter type="COMPLEXITY" missed="7" covered="15" />
+      <counter type="METHOD" missed="0" covered="11" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="service/InventoryService">
+      <counter type="INSTRUCTION" missed="22" covered="115" />
+      <counter type="BRANCH" missed="1" covered="1" />
+      <counter type="LINE" missed="1" covered="29" />
+      <counter type="COMPLEXITY" missed="2" covered="9" />
+      <counter type="METHOD" missed="1" covered="9" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="service/IRecommendationService" />
+    <class name="service/IGroceryService" />
+    <class name="service/GroceryService">
+      <counter type="INSTRUCTION" missed="22" covered="179" />
+      <counter type="BRANCH" missed="2" covered="12" />
+      <counter type="LINE" missed="4" covered="39" />
+      <counter type="COMPLEXITY" missed="3" covered="24" />
+      <counter type="METHOD" missed="1" covered="19" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="service/InventoryManager">
+      <counter type="INSTRUCTION" missed="62" covered="0" />
+      <counter type="LINE" missed="15" covered="0" />
+      <counter type="COMPLEXITY" missed="6" covered="0" />
+      <counter type="METHOD" missed="6" covered="0" />
+      <counter type="CLASS" missed="1" covered="0" />
+    </class>
+    <class name="service/PreferenceService">
+      <counter type="INSTRUCTION" missed="0" covered="21" />
+      <counter type="LINE" missed="0" covered="7" />
+      <counter type="COMPLEXITY" missed="0" covered="4" />
+      <counter type="METHOD" missed="0" covered="4" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="service/RecommendationService">
+      <counter type="INSTRUCTION" missed="12" covered="385" />
+      <counter type="BRANCH" missed="9" covered="47" />
+      <counter type="LINE" missed="1" covered="100" />
+      <counter type="COMPLEXITY" missed="10" covered="36" />
+      <counter type="METHOD" missed="1" covered="16" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="service/IPreferenceService" />
+  </package>
+  <package name="loader">
+    <class name="loader/JsonRecipeLoader$RecipeFile" />
+    <class name="loader/JsonFoodCatalogLoader$FoodCatalogFile" />
+    <class name="loader/JsonRecipeLoader$IngredientDto" />
+    <class name="loader/JsonRecipeLoader$RecipeDto" />
+    <class name="loader/DemoInventoryLoader">
+      <counter type="INSTRUCTION" missed="45" covered="135" />
+      <counter type="BRANCH" missed="10" covered="12" />
+      <counter type="LINE" missed="8" covered="28" />
+      <counter type="COMPLEXITY" missed="10" covered="6" />
+      <counter type="METHOD" missed="1" covered="4" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="loader/FoodCatalogJsonFile">
+      <counter type="INSTRUCTION" missed="9" covered="0" />
+      <counter type="LINE" missed="4" covered="0" />
+      <counter type="COMPLEXITY" missed="2" covered="0" />
+      <counter type="METHOD" missed="2" covered="0" />
+      <counter type="CLASS" missed="1" covered="0" />
+    </class>
+    <class name="loader/DemoInventoryLoader$1">
+      <counter type="INSTRUCTION" missed="0" covered="3" />
+      <counter type="LINE" missed="0" covered="1" />
+      <counter type="COMPLEXITY" missed="0" covered="1" />
+      <counter type="METHOD" missed="0" covered="1" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="loader/RecipeJsonFile">
+      <counter type="INSTRUCTION" missed="9" covered="0" />
+      <counter type="LINE" missed="4" covered="0" />
+      <counter type="COMPLEXITY" missed="2" covered="0" />
+      <counter type="METHOD" missed="2" covered="0" />
+      <counter type="CLASS" missed="1" covered="0" />
+    </class>
+    <class name="loader/JsonFoodCatalogLoader$CategoryDto" />
+    <class name="loader/JsonFoodCatalogLoader">
+      <counter type="INSTRUCTION" missed="20" covered="80" />
+      <counter type="BRANCH" missed="3" covered="5" />
+      <counter type="LINE" missed="3" covered="14" />
+      <counter type="COMPLEXITY" missed="3" covered="4" />
+      <counter type="METHOD" missed="0" covered="3" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="loader/JsonRecipeLoader$CategoryDto" />
+    <class name="loader/JsonRecipeLoader">
+      <counter type="INSTRUCTION" missed="31" covered="174" />
+      <counter type="BRANCH" missed="11" covered="17" />
+      <counter type="LINE" missed="8" covered="34" />
+      <counter type="COMPLEXITY" missed="11" covered="8" />
+      <counter type="METHOD" missed="0" covered="5" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="loader/JsonFoodCatalogLoader$FoodCatalogEntryDto" />
+    <class name="loader/DemoInventoryLoader$DemoInventoryRow" />
+  </package>
+  <package name="model">
+    <class name="model/GroceryItem">
+      <counter type="INSTRUCTION" missed="0" covered="47" />
+      <counter type="LINE" missed="0" covered="18" />
+      <counter type="COMPLEXITY" missed="0" covered="9" />
+      <counter type="METHOD" missed="0" covered="9" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="model/FoodItem">
+      <counter type="INSTRUCTION" missed="1" covered="79" />
+      <counter type="BRANCH" missed="1" covered="5" />
+      <counter type="LINE" missed="0" covered="21" />
+      <counter type="COMPLEXITY" missed="1" covered="13" />
+      <counter type="METHOD" missed="0" covered="11" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="model/Recipe$HealthTag">
+      <counter type="INSTRUCTION" missed="0" covered="27" />
+      <counter type="LINE" missed="0" covered="5" />
+      <counter type="COMPLEXITY" missed="0" covered="1" />
+      <counter type="METHOD" missed="0" covered="1" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="model/FoodCatalogEntry">
+      <counter type="INSTRUCTION" missed="3" covered="44" />
+      <counter type="LINE" missed="1" covered="13" />
+      <counter type="COMPLEXITY" missed="1" covered="6" />
+      <counter type="METHOD" missed="1" covered="6" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="model/RecipeCategory">
+      <counter type="INSTRUCTION" missed="0" covered="21" />
+      <counter type="LINE" missed="0" covered="8" />
+      <counter type="COMPLEXITY" missed="0" covered="4" />
+      <counter type="METHOD" missed="0" covered="4" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="model/HealthGoal">
+      <counter type="INSTRUCTION" missed="0" covered="21" />
+      <counter type="LINE" missed="0" covered="4" />
+      <counter type="COMPLEXITY" missed="0" covered="1" />
+      <counter type="METHOD" missed="0" covered="1" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="model/Recipe">
+      <counter type="INSTRUCTION" missed="0" covered="163" />
+      <counter type="LINE" missed="0" covered="34" />
+      <counter type="COMPLEXITY" missed="0" covered="17" />
+      <counter type="METHOD" missed="0" covered="17" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="model/FoodCategory">
+      <counter type="INSTRUCTION" missed="0" covered="21" />
+      <counter type="LINE" missed="0" covered="8" />
+      <counter type="COMPLEXITY" missed="0" covered="4" />
+      <counter type="METHOD" missed="0" covered="4" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="model/Preference">
+      <counter type="INSTRUCTION" missed="0" covered="15" />
+      <counter type="LINE" missed="0" covered="6" />
+      <counter type="COMPLEXITY" missed="0" covered="3" />
+      <counter type="METHOD" missed="0" covered="3" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="model/Recipe$Ingredient">
+      <counter type="INSTRUCTION" missed="0" covered="21" />
+      <counter type="LINE" missed="0" covered="8" />
+      <counter type="COMPLEXITY" missed="0" covered="4" />
+      <counter type="METHOD" missed="0" covered="4" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+  </package>
+  <package name="api">
+    <class name="api/SmartFridgeApiApplication">
+      <counter type="INSTRUCTION" missed="5" covered="3" />
+      <counter type="LINE" missed="2" covered="1" />
+      <counter type="COMPLEXITY" missed="1" covered="1" />
+      <counter type="METHOD" missed="1" covered="1" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+  </package>
+</jacoco-summary>

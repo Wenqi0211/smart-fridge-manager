@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
@@ -116,42 +117,41 @@ public class TestGroceryApiController {
      */
     @Test
     void testAddLineWithNullBodyReturnsBadRequest() {
-        ResponseEntity<GroceryItem> response = groceryApiController.addLine(null);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ResponseStatusException error = assertThrows(ResponseStatusException.class,
+                () -> groceryApiController.addLine(null));
+        assertEquals(HttpStatus.BAD_REQUEST, error.getStatus());
     }
 
     /**
-     * Tests POST /items with negative price defaults price to 0.
-     * Branch: price < 0 → set price to 0.0.
+     * Tests POST /items rejects a negative price without adding a row.
      */
     @Test
-    void testAddLineWithNegativePriceDefaultsPriceToZero() {
+    void testAddLineWithNegativePriceIsRejected() {
         GroceryAddRequest req = new GroceryAddRequest();
         req.setFoodName("Milk");
         req.setQuantity(1);
         req.setPrice(-5.0);
 
-        ResponseEntity<GroceryItem> response = groceryApiController.addLine(req);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(0.0, response.getBody().getPrice(), 0.0001);
+        ResponseStatusException error = assertThrows(ResponseStatusException.class,
+                () -> groceryApiController.addLine(req));
+        assertEquals(HttpStatus.BAD_REQUEST, error.getStatus());
+        assertEquals(1, groceryService.getItems().size());
     }
 
     /**
-     * Tests POST /items with negative quantity defaults quantity to 0.
-     * Branch: quantity < 0 → Math.max(0, qty) → 0.
+     * Tests POST /items rejects a negative quantity without adding a row.
      */
     @Test
-    void testAddLineWithNegativeQuantityDefaultsQuantityToZero() {
+    void testAddLineWithNegativeQuantityIsRejected() {
         GroceryAddRequest req = new GroceryAddRequest();
         req.setFoodName("Milk");
         req.setQuantity(-3);
         req.setPrice(3.0);
 
-        ResponseEntity<GroceryItem> response = groceryApiController.addLine(req);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(0, response.getBody().getQuantity());
+        ResponseStatusException error = assertThrows(ResponseStatusException.class,
+                () -> groceryApiController.addLine(req));
+        assertEquals(HttpStatus.BAD_REQUEST, error.getStatus());
+        assertEquals(1, groceryService.getItems().size());
     }
 
     // DELETE /items/{id}
@@ -173,8 +173,9 @@ public class TestGroceryApiController {
      */
     @Test
     void testDeleteLineWithNonExistingIdReturnsNotFound() {
-        ResponseEntity<Void> response = groceryApiController.deleteLine("nonexistent");
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        ResponseStatusException error = assertThrows(ResponseStatusException.class,
+                () -> groceryApiController.deleteLine("nonexistent"));
+        assertEquals(HttpStatus.NOT_FOUND, error.getStatus());
     }
 
     // PATCH /items/{id}/collected

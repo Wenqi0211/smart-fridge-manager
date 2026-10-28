@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -91,8 +92,9 @@ public class TestPreferenceApiController {
      */
     @Test
     void testSaveWithNullBodyReturnsBadRequest() {
-        ResponseEntity<Preference> response = preferenceApiController.save(null);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ResponseStatusException error = assertThrows(ResponseStatusException.class,
+                () -> preferenceApiController.save(null));
+        assertEquals(HttpStatus.BAD_REQUEST, error.getStatus());
     }
 
     /**
@@ -103,8 +105,9 @@ public class TestPreferenceApiController {
     void testSaveWithNullHealthGoalReturnsBadRequest() {
         PreferenceRequest req = new PreferenceRequest();
         req.setHealthGoal(null);
-        ResponseEntity<Preference> response = preferenceApiController.save(req);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ResponseStatusException error = assertThrows(ResponseStatusException.class,
+                () -> preferenceApiController.save(req));
+        assertEquals(HttpStatus.BAD_REQUEST, error.getStatus());
     }
 
     /**
@@ -113,8 +116,9 @@ public class TestPreferenceApiController {
      */
     @Test
     void testSaveWithBlankHealthGoalReturnsBadRequest() {
-        ResponseEntity<Preference> response = preferenceApiController.save(makeRequest("   "));
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ResponseStatusException error = assertThrows(ResponseStatusException.class,
+                () -> preferenceApiController.save(makeRequest("   ")));
+        assertEquals(HttpStatus.BAD_REQUEST, error.getStatus());
     }
 
     /**
@@ -123,9 +127,9 @@ public class TestPreferenceApiController {
      */
     @Test
     void testSaveWithInvalidGoalStringReturnsBadRequest() {
-        ResponseEntity<Preference> response =
-                preferenceApiController.save(makeRequest("INVALID_GOAL"));
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ResponseStatusException error = assertThrows(ResponseStatusException.class,
+                () -> preferenceApiController.save(makeRequest("INVALID_GOAL")));
+        assertEquals(HttpStatus.BAD_REQUEST, error.getStatus());
     }
 
     // Helper

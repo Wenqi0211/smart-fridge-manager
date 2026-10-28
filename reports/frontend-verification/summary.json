@@ -1,0 +1,14 @@
+{
+  "generatedAtUtc": "2026-10-28T06:05:42.482039+00:00",
+  "framework": "Flutter 3.47.8 / Dart 3.13.7 native arm64",
+  "tests": 23,
+  "failed": 0,
+  "analysis": "No issues found",
+  "sourceTestSHA256": "7ed7cb6276a122b2abcb62590488c59b695c030dc0a304703d95cee0109cd711",
+  "fingerprintScope": "lib/**/*.dart, test/**/*.dart, pubspec.yaml, pubspec.lock, analysis_options.yaml; relative paths and bytes in sorted order",
+  "commands": [
+    "flutter --suppress-analytics test --no-pub --reporter expanded",
+    "flutter --suppress-analytics analyze --no-pub"
+  ],
+  "verification": "Actual local Flutter unit/widget tests and static analysis; not native mobile deployment"
+}

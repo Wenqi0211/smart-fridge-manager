@@ -39,6 +39,7 @@ tasks.named('bootRun') {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
@@ -55,15 +56,14 @@ test {
     finalizedBy jacocoTestReport
 }
 
+jacoco { toolVersion = '0.8.12' }
+
+// Measure all compiled production classes, including entry points and legacy CLI.
 jacocoTestReport {
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                    '**/SmartFridgeApiApplication.class',
-                    '**/Main.class',
-                    'api/SmartFridgeApiApplication.class',
-                    'ui/Main.class'
-            ])
-        }))
+    dependsOn test
+    reports {
+        xml.required = true
+        csv.required = true
+        html.required = true
     }
 }

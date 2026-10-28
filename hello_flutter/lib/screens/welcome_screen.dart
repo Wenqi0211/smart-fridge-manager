@@ -1,4 +1,3 @@
-
 // ignore_for_file: slash_for_doc_comments
 
 import 'package:flutter/material.dart';
@@ -52,32 +51,28 @@ class WelcomePage extends StatelessWidget {
    * cardTheme: https://api.flutter.dev/flutter/material/ThemeData/cardTheme.html
    */
   ThemeData _theme(BuildContext context) {
-    final scheme = ColorScheme.fromSeed(
-      seedColor: _brown,
-      brightness: Brightness.light,
-    ).copyWith(
-      primary: _brown,
-      onPrimary: _nav,
-      secondary: _gold,
-      surface: _bg,
-      onSurface: _dark,
-      onSurfaceVariant: _body,
-      outlineVariant: _iconBg,
-    );
+    final scheme =
+        ColorScheme.fromSeed(
+          seedColor: _brown,
+          brightness: Brightness.light,
+        ).copyWith(
+          primary: _brown,
+          onPrimary: _nav,
+          secondary: _gold,
+          surface: _bg,
+          onSurface: _dark,
+          onSurfaceVariant: _body,
+          outlineVariant: _iconBg,
+        );
 
-    return ThemeData.from(
-      colorScheme: scheme,
-      useMaterial3: true,
-    ).copyWith(
+    return ThemeData.from(colorScheme: scheme, useMaterial3: true).copyWith(
       scaffoldBackgroundColor: _bg,
       canvasColor: _bg,
       cardTheme: CardThemeData(
         color: _card,
         elevation: 0,
         margin: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
@@ -222,7 +217,7 @@ class _NavBar extends StatelessWidget {
                   const _NavLink('PRICING'),
                   const SizedBox(width: 28),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.pushNamed(context, '/auth'),
                     style: TextButton.styleFrom(
                       foregroundColor: _dark,
                       textStyle: const TextStyle(
@@ -250,7 +245,7 @@ class _NavBar extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () => Navigator.pushNamed(context, '/auth'),
                   child: const Text('LOG IN'),
                 ),
               ],
@@ -339,11 +334,7 @@ class _HeroSection extends StatelessWidget {
 
           return const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _HeroLeft(),
-              SizedBox(height: 36),
-              _HeroRight(),
-            ],
+            children: [_HeroLeft(), SizedBox(height: 36), _HeroRight()],
           );
         },
       ),
@@ -411,11 +402,7 @@ class _HeroLeft extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 560),
           child: const Text(
             'SmartFridge tracks every item in your fridge, alerts you before things expire, and suggests recipes from what you already have — saving money and reducing waste.',
-            style: TextStyle(
-              fontSize: 14,
-              color: _body,
-              height: 1.65,
-            ),
+            style: TextStyle(fontSize: 14, color: _body, height: 1.65),
           ),
         ),
         const SizedBox(height: 16),
@@ -456,13 +443,10 @@ class _HeroLeft extends StatelessWidget {
           overflowSpacing: 12,
           children: [
             FilledButton(
-              onPressed: () => Navigator.pushNamed(context, '/preference'),
+              onPressed: () => Navigator.pushNamed(context, '/register'),
               child: const Text('GET STARTED FREE'),
             ),
-            OutlinedButton(
-              onPressed: () {},
-              child: const Text('MORE DETAIL'),
-            ),
+            OutlinedButton(onPressed: () {}, child: const Text('MORE DETAIL')),
           ],
         ),
         const SizedBox(height: 22),
@@ -698,9 +682,7 @@ class _FloatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: _card,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         child: Row(
@@ -728,13 +710,7 @@ class _FloatCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 2),
-                Text(
-                  sub,
-                  style: const TextStyle(
-                    fontSize: 11,
-                    color: _muted,
-                  ),
-                ),
+                Text(sub, style: const TextStyle(fontSize: 11, color: _muted)),
               ],
             ),
           ],
@@ -801,7 +777,7 @@ class _FeaturesSection extends StatelessWidget {
                         title: 'Inventory Tracking',
                         titleColor: _dark,
                         body:
-                        "Know exactly what's in your fridge at all times. Expiry alerts keep you ahead of waste.",
+                            "Know exactly what's in your fridge at all times. Expiry alerts keep you ahead of waste.",
                         bodyColor: _body,
                       ),
                     ),
@@ -815,7 +791,7 @@ class _FeaturesSection extends StatelessWidget {
                         title: 'Recipe Suggestions',
                         titleColor: _nav,
                         body:
-                        'Get personalised recipes every day based on what you already have at home.',
+                            'Get personalised recipes every day based on what you already have at home.',
                         bodyColor: Color(0xCCFFFCF7),
                       ),
                     ),
@@ -829,7 +805,7 @@ class _FeaturesSection extends StatelessWidget {
                         title: 'Expiry Alerts',
                         titleColor: _dark,
                         body:
-                        'Smart notifications remind you to use ingredients before they go bad.',
+                            'Smart notifications remind you to use ingredients before they go bad.',
                         bodyColor: _body,
                       ),
                     ),
@@ -846,7 +822,7 @@ class _FeaturesSection extends StatelessWidget {
                       title: 'Inventory Tracking',
                       titleColor: _dark,
                       body:
-                      "Know exactly what's in your fridge at all times. Expiry alerts keep you ahead of waste.",
+                          "Know exactly what's in your fridge at all times. Expiry alerts keep you ahead of waste.",
                       bodyColor: _body,
                     ),
                     SizedBox(height: 12),
@@ -858,7 +834,7 @@ class _FeaturesSection extends StatelessWidget {
                       title: 'Recipe Suggestions',
                       titleColor: _nav,
                       body:
-                      'Get personalised recipes every day based on what you already have at home.',
+                          'Get personalised recipes every day based on what you already have at home.',
                       bodyColor: Color(0xCCFFFCF7),
                     ),
                     SizedBox(height: 12),
@@ -870,7 +846,7 @@ class _FeaturesSection extends StatelessWidget {
                       title: 'Expiry Alerts',
                       titleColor: _dark,
                       body:
-                      'Smart notifications remind you to use ingredients before they go bad.',
+                          'Smart notifications remind you to use ingredients before they go bad.',
                       bodyColor: _body,
                     ),
                   ],
@@ -914,9 +890,7 @@ class _FeatureCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: cardBg,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -943,11 +917,7 @@ class _FeatureCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               body,
-              style: TextStyle(
-                fontSize: 12,
-                color: bodyColor,
-                height: 1.6,
-              ),
+              style: TextStyle(fontSize: 12, color: bodyColor, height: 1.6),
             ),
           ],
         ),
@@ -988,23 +958,20 @@ class _StatsBar extends StatelessWidget {
 
             return wide
                 ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                for (final s in _stats)
-                  _StatItem(value: s.$1, label: s.$2),
-              ],
-            )
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      for (final s in _stats)
+                        _StatItem(value: s.$1, label: s.$2),
+                    ],
+                  )
                 : Column(
-              children: [
-                for (int i = 0; i < _stats.length; i++) ...[
-                  if (i > 0) const SizedBox(height: 20),
-                  _StatItem(
-                    value: _stats[i].$1,
-                    label: _stats[i].$2,
-                  ),
-                ],
-              ],
-            );
+                    children: [
+                      for (int i = 0; i < _stats.length; i++) ...[
+                        if (i > 0) const SizedBox(height: 20),
+                        _StatItem(value: _stats[i].$1, label: _stats[i].$2),
+                      ],
+                    ],
+                  );
           },
         ),
       ),
@@ -1020,10 +987,7 @@ class _StatsBar extends StatelessWidget {
  * Text: https://api.flutter.dev/flutter/widgets/Text-class.html
  */
 class _StatItem extends StatelessWidget {
-  const _StatItem({
-    required this.value,
-    required this.label,
-  });
+  const _StatItem({required this.value, required this.label});
 
   final String value;
   final String label;

@@ -177,4 +177,16 @@ public class TestGroceryService {
     void testSearchByNameReturnsAllForBlankKeyword() {
         assertEquals(1, groceryService.searchByName("   ").size());
     }
+    @Test
+    void testOverflowDoesNotResetOrMutateQuantity() {
+        groceryService.updateQuantity("1", Integer.MAX_VALUE - 2);
+        assertThrows(GroceryQuantityLimitException.class,
+                () -> groceryService.updateQuantity("1", 1));
+        assertEquals(Integer.MAX_VALUE, groceryService.getItems().get(0).getQuantity());
+    }
+
+    @Test
+    void testLargestNegativeDeltaStillFloorsAtZero() {
+        assertEquals(0, groceryService.updateQuantity("1", Integer.MIN_VALUE).getQuantity());
+    }
 }

@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 
 import 'app/main_shell.dart';
+import 'screens/auth_screen.dart';
 import 'screens/preferences_screen.dart';
 import 'screens/welcome_screen.dart';
+import 'services/fridge_api_service.dart';
 import 'theme/smart_fridge_tokens.dart';
 
 /** App entry point. */
@@ -21,12 +23,44 @@ void main() {
  * MaterialApp: https://api.flutter.dev/flutter/material/MaterialApp-class.html
  * ThemeData: https://api.flutter.dev/flutter/material/ThemeData-class.html
  */
-class SmartFridgeApp extends StatelessWidget {
+class SmartFridgeApp extends StatefulWidget {
   const SmartFridgeApp({super.key});
+
+  @override
+  State<SmartFridgeApp> createState() => _SmartFridgeAppState();
+}
+
+class _SmartFridgeAppState extends State<SmartFridgeApp> {
+  final _navigator = GlobalKey<NavigatorState>();
+
+  @override
+  void initState() {
+    super.initState();
+    FridgeApiService.instance.onSessionExpired = () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _navigator.currentState?.pushNamedAndRemoveUntil(
+            '/auth',
+            (_) => false,
+          );
+        }
+      });
+    };
+  }
+
+  @override
+  void dispose() {
+    FridgeApiService.instance.onSessionExpired = null;
+    super.dispose();
+  }
+
+  Widget _protected(Widget child) =>
+      FridgeApiService.instance.isAuthenticated ? child : const AuthScreen();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: _navigator,
       title: 'SmartFridge',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -41,8 +75,10 @@ class SmartFridgeApp extends StatelessWidget {
       ),
       routes: {
         '/': (_) => const WelcomePage(),
-        '/preference': (_) => const PreferencesScreen(),
-        '/main': (_) => const MainShell(),
+        '/auth': (_) => const AuthScreen(),
+        '/register': (_) => const AuthScreen(register: true),
+        '/preference': (_) => _protected(const PreferencesScreen()),
+        '/main': (_) => _protected(const MainShell()),
       },
     );
   }

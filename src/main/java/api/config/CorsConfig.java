@@ -14,8 +14,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         // 演示或交作业展示时：把 * 改成你们前端真实的网址，更安全 / For demo day: replace * with your real front-end URL.
-        // 没要求做登录就别硬加一大套 Spring Security / Don't add big auth unless PRD asks.
-        // INSERT YOUR CODE HERE
+        // Stateless bearer tokens are injected by FridgeApiService; cookies are not used.
         registry.addMapping("/api/**")
                 .allowedOriginPatterns("*")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")

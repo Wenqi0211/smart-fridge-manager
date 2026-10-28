@@ -26,6 +26,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -180,9 +181,9 @@ public class TestRecommendationApiController {
      */
     @Test
     void testDetailWithNonExistingIdReturnsNotFound() {
-        ResponseEntity<RecipeDetailResponse> response =
-                recommendationApiController.detail("nonexistent");
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        ResponseStatusException error = assertThrows(ResponseStatusException.class,
+                () -> recommendationApiController.detail("nonexistent"));
+        assertEquals(HttpStatus.NOT_FOUND, error.getStatus());
     }
 
     //  POST /api/recommendations/{id}/grocery
@@ -193,9 +194,9 @@ public class TestRecommendationApiController {
      */
     @Test
     void testAddMissingIngredientsWithNonExistingIdReturnsNotFound() {
-        ResponseEntity<RecipeToGroceryResponse> response =
-                recommendationApiController.addMissingIngredientsToGrocery("nonexistent");
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        ResponseStatusException error = assertThrows(ResponseStatusException.class,
+                () -> recommendationApiController.addMissingIngredientsToGrocery("nonexistent"));
+        assertEquals(HttpStatus.NOT_FOUND, error.getStatus());
     }
 
     /**
@@ -245,5 +246,48 @@ public class TestRecommendationApiController {
 
         assertEquals("recipe-1",  response.getBody().getRecipeId());
         assertEquals("Egg Bowl",  response.getBody().getRecipeTitle());
+    }
+    @Test
+    void optionalAliasIsNotAddedWhenRequiredIngredientHasSameCanonicalName() {
+        RecommendationApiController planner = planner(List.of(
+                new Recipe.Ingredient("Egg", "2 count", false),
+                new Recipe.Ingredient("eggs", "5 count", true)));
+        planner.addMissingIngredientsToGrocery("plan");
+        assertEquals(1, groceryService.getItems().size());
+        assertEquals(2, groceryService.getItems().get(0).getQuantity());
+    }
+
+    @Test
+    void requiredAliasesAggregateIntoOneCanonicalGroceryLine() {
+        RecommendationApiController planner = planner(List.of(
+                new Recipe.Ingredient("Egg", "2 count", false),
+                new Recipe.Ingredient("eggs", "3 count", false)));
+        RecipeToGroceryResponse response = planner.addMissingIngredientsToGrocery("plan").getBody();
+        assertEquals(1, response.getAddedCount());
+        assertEquals(0, response.getMergedCount());
+        assertEquals(1, groceryService.getItems().size());
+        assertEquals(5, groceryService.getItems().get(0).getQuantity());
+    }
+
+    @Test
+    void combinedAliasQuantitiesOverflowBeforeAnyNewLineIsAdded() {
+        RecommendationApiController planner = planner(List.of(
+                new Recipe.Ingredient("Egg", "2147483647 count", false),
+                new Recipe.Ingredient("eggs", "1 count", false)));
+        assertThrows(service.GroceryQuantityLimitException.class,
+                () -> planner.addMissingIngredientsToGrocery("plan"));
+        assertEquals(0, groceryService.getItems().size());
+    }
+
+    private RecommendationApiController planner(List<Recipe.Ingredient> ingredients) {
+        FoodCatalog catalog = new FoodCatalog(List.of(
+                new FoodCatalogEntry("egg", "Egg", List.of("eggs"), 7, foodCat)));
+        Recipe recipe = Recipe.loaded("plan", "Egg plan", recipeCat,
+                List.of(Recipe.HealthTag.BALANCED), ingredients, List.of(), 4, 10, 100, "Plan");
+        return new RecommendationApiController(new CatalogController(catalog),
+                new InventoryController(new InventoryService(catalog)),
+                new PreferenceController(preferenceService),
+                new RecommendationController(new RecommendationService(List.of(recipe), catalog)),
+                new GroceryController(groceryService));
     }
 }

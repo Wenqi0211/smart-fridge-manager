@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,7 +59,7 @@ public class TestRecipeDetailResponse {
     private FoodItem makeFoodItem(String name, int quantity, String unit) {
         return new FoodItem(
                 "i1", name, foodCategory, quantity, unit,
-                "2026-04-01", "2026-06-01");
+                LocalDate.now().toString(), LocalDate.now().plusDays(7).toString());
     }
 
     // Basic field mapping

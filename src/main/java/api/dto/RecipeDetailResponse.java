@@ -59,7 +59,7 @@ public class RecipeDetailResponse {
         r.matchScore = recipe.getMatchScore();
 
         // Match percentage = matched required ingredients / total required ingredients.
-        int totalRequired = recipe.getRequiredIngredients().size();
+        int totalRequired = (int) recipe.getRequiredIngredients().stream().filter(i -> !i.isOptional()).count();
         int matchedRequired = recipe.getAvailableIngredients().size();
         r.matchPercent = totalRequired == 0 ? 0 : (int) Math.round((double) matchedRequired * 100.0 / totalRequired);
 
@@ -143,13 +143,15 @@ public class RecipeDetailResponse {
             List<FoodItem> inventory,
             Function<String, String> canonicalNameResolver) {
         String target = normalize(canonicalNameResolver.apply(ingredientName));
+        FoodItem earliestUsable = null;
         for (FoodItem item : inventory) {
             String inv = normalize(canonicalNameResolver.apply(item.getName()));
-            if (target.equals(inv)) {
-                return item;
+            if (target.equals(inv) && item.isAvailableForCooking()
+                    && (earliestUsable == null || item.getExpiryDate().compareTo(earliestUsable.getExpiryDate()) < 0)) {
+                earliestUsable = item;
             }
         }
-        return null;
+        return earliestUsable;
     }
 
     /**

@@ -5,6 +5,8 @@ import api.dto.FoodItemResponse;
 import controller.InventoryController;
 import model.FoodItem;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,7 +61,7 @@ public class InventoryApiController {
     @PostMapping
     public ResponseEntity<FoodItemResponse> add(@RequestBody AddFoodRequest body) {
         if (body == null || body.getFoodName() == null || body.getFoodName().isBlank()) {
-            return ResponseEntity.badRequest().build();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "foodName must not be blank");
         }
         FoodItem added = inventoryController.addItem(body.getFoodName().trim());
         return ResponseEntity.ok(FoodItemResponse.from(added));

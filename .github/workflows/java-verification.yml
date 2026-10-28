@@ -1,0 +1,29 @@
+name: Java verification
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+      - name: Run all tests and measure all production classes
+        run: bash ./gradlew --no-daemon clean test jacocoTestReport
+      - name: Retain test and coverage evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-verification
+          if-no-files-found: warn
+          path: |
+            build/test-results/test/TEST-*.xml
+            build/reports/jacoco/test/jacocoTestReport.xml

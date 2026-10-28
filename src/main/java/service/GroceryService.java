@@ -132,7 +132,11 @@ public class GroceryService implements IGroceryService {
     @Override
     public GroceryItem updateQuantity(String itemId, int delta) {
         GroceryItem item = findById(itemId);
-        item.setQuantity(Math.max(0, item.getQuantity() + delta));
+        long next = (long) item.getQuantity() + delta;
+        if (next > Integer.MAX_VALUE) {
+            throw new GroceryQuantityLimitException();
+        }
+        item.setQuantity((int) Math.max(0L, next));
         return item;
     }
 

@@ -32,3 +32,5 @@ bin
 # ingore ide files
 .vscode
 idea/.DS_Store
+.gradle-user-home/
+__pycache__/

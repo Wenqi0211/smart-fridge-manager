@@ -51,13 +51,15 @@ public class RecommendationService implements IRecommendationService {
      */
     private FoodItem findMatchingInventoryItem(String ingredientName, List<FoodItem> inventory) {
         String ca = norm(foodCatalog.canonicalFoodName(ingredientName));
+        FoodItem earliestUsable = null;
         for (FoodItem item : inventory) {
             String cb = norm(foodCatalog.canonicalFoodName(item.getName()));
-            if (ca.equals(cb)) {
-                return item;
+            if (ca.equals(cb) && item.isAvailableForCooking()
+                    && (earliestUsable == null || item.getExpiryDate().compareTo(earliestUsable.getExpiryDate()) < 0)) {
+                earliestUsable = item;
             }
         }
-        return null;
+        return earliestUsable;
     }
 
     /**
